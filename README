@@ -1,0 +1,12 @@
+Fork of http://trac-hacks.org/wiki/TimeVisualizerPlugin
+as of trac hacks svn repo r3323
+
+git-svn-id: http://trac-hacks.org/svn/timevisualizerplugin@3323 7322e99d-02ea-0310-aa39-e9a107903beb
+
+NOTICE! I won't update this software anymore. I hacked with it
+enough to notice that it won't easily do what I want. The patches
+I've applied should make this plugin work with trac 0.12, nothing else.
+
+See also:
+http://trac-hacks.org/browser/timevisualizerplugin/branches/TimeVisualizer_0.6/release_notes.txt
+
