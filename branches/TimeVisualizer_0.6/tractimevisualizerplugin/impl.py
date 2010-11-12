@@ -394,11 +394,7 @@ if __name__ == "__main__":
 def process_request(plugin, req):
     """Renders a svg graph based on request attributes and returns a http response (or traceback in case of error)"""
 
-    req.send_response(200)
-    req.send_header('Content-Type', "image/svg+xml")
-    req.send_header('Last-Modified', trac.util.datefmt.http_date(time.time()))
-    req.end_headers()
-
+    svg = None
     if req.method != 'HEAD':
         db = plugin.env.get_db_cnx()
         args = req.args.copy()
@@ -414,7 +410,6 @@ def process_request(plugin, req):
         else:
             sys.stdout = NullOut()
 
-        svg = None
         try:
             svg = build_svg(db, args)
         finally:
@@ -422,6 +417,18 @@ def process_request(plugin, req):
             sys.stdout = old_sys_stdout
             if isinstance(log, StringIO.StringIO):
                 plugin.log.debug(log.getvalue())
-        if svg:
-            req.write(svg)
+    if svg:
+        req.send_response(200)
+        req.send_header('Content-Type', "image/svg+xml")
+        req.send_header('Last-Modified', trac.util.datefmt.http_date(time.time()))
+        req.send_header('Content-Length', len(svg))
+        req.end_headers()
+        req.write(svg)
+    else:
+	msg = "Failed to create SVG image\n";
+	req.send_response(500)
+        req.send_header('Content-Type', "text/plain")
+        req.send_header('Content-Length', len(msg))
+        req.end_headers()
+        req.write(msg)
     raise trac.web.RequestDone
