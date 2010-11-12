@@ -1,0 +1,4 @@
+tractimevisualizerplugin/*.pyc
+TracTimeVisualizerPlugin.egg-info/*
+build/*
+dist/*
