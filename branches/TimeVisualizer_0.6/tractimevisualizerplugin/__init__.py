@@ -7,7 +7,8 @@ DEVELOPER_MODE=False
 __version__ = '0.6'
 __url__ = 'http://trac-hacks.org/wiki/TimeVisualizerPlugin'
 __author__ = 'Markus Pelkonen'
-__copyright__ = 'Copyright (C) 2008 Markus Pelkonen'
+__copyright__ = """Copyright (C) 2008 Markus Pelkonen
+Copyright (C) 2010 Mikko Rantalainen"""
 __license__ = 'BSD'
 __license_long__ = __copyright__ + """
 All rights reserved.
