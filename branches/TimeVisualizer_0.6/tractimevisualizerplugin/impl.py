@@ -81,7 +81,7 @@ def trac_parse_date(obj):
     return result
 
 # ==============================================================================
-def build_svg(db, options):
+def build_svg(plugin, db, options):
     """trac db instance (usually taken from environment) is mandatory."""
     def strtotype(val, type):
         if isinstance(val, str) or isinstance(val, unicode):
@@ -383,6 +383,7 @@ if __name__ == "__main__":
     def build_svg_paramlist(db, **args):
         return build_svg(db, args)
 
+    assert False, "FIXME: This code never worked for anybody else but the original developer (test environment unknown)"
     env = trac.env.open_environment("/var/scm/trac/tvdemo1")
     db = env.get_db_cnx()
     svg = build_svg_paramlist(db, milestone='milestone1', time_interval=3600*24, datestart="8/1/07", dateend="10/1/07")
@@ -411,7 +412,7 @@ def process_request(plugin, req):
             sys.stdout = NullOut()
 
         try:
-            svg = build_svg(db, args)
+            svg = build_svg(plugin, db, args)
         finally:
             log = sys.stdout
             sys.stdout = old_sys_stdout
