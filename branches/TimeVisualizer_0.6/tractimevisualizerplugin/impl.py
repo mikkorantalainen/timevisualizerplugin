@@ -426,12 +426,13 @@ def process_request(plugin, req):
             if isinstance(log, StringIO.StringIO):
                 plugin.log.debug(log.getvalue())
     if svg:
+	svg_str = svg.encode('UTF-8','ignore');
         req.send_response(200)
-        req.send_header('Content-Type', "image/svg+xml")
+        req.send_header('Content-Type', "image/svg+xml; charset=utf-8")
         req.send_header('Last-Modified', trac.util.datefmt.http_date(time.time()))
-        req.send_header('Content-Length', len(svg))
+        req.send_header('Content-Length', len(svg_str))
         req.end_headers()
-        req.write(svg)
+        req.write(svg_str)
     else:
 	msg = "Failed to create SVG image\n";
 	req.send_response(500)
