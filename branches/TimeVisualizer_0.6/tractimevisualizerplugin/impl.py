@@ -217,12 +217,15 @@ def build_svg(plugin, db, options):
 
     result = []
     def process_time(time):
+        plugin.env.log.info("timevisualizer: processing time %s" % (time) )
         hours = calc_hours(tickets)
         if len(result) >= 2 and result[-1] == hours:
+            plugin.env.log.info("timevisualizer: updating timestamp only" )
             # update timestamp
             result[-2] = time
         elif len(result) < 2 or result[-1] != hours:
             # data changed from previous item -> write row
+            plugin.env.log.info("timevisualizer: adding a new result" )
             result.append(time)
             result.append(hours)
 
@@ -283,6 +286,8 @@ def build_svg(plugin, db, options):
 </svg>
 """
     if len(result) < 4:
+        plugin.env.log.info("timevisualizer: result=%s" % (repr(result)))
+        plugin.env.log.info("timevisualizer: Result array has less than 4 items (count=%d), aborting." % (len(result)) )
         return NO_DATA
 
     # last item is zero and timestamp is updated to first ticket creation, so it needs to be 'scaled' to first item where hours change
@@ -295,6 +300,7 @@ def build_svg(plugin, db, options):
         for i in range(0, len(result),2):
             if result[i] >= timestart: continue
             if i == 0:
+                plugin.env.log.info("timevisualizer: all results were older than timestart, aborting.")
                 return NO_DATA
             result[i] = timestart
             result[i+1] = result[i-1]
@@ -306,6 +312,7 @@ def build_svg(plugin, db, options):
         for i in range(starti, -2, -2):
             if result[i] <= timeend: continue
             if i == starti:
+                plugin.env.log.info("timevisualizer: all results were newer than timeend, aborting.")
                 return NO_DATA
             result[i] = timeend
             result[i+1] = result[i+3]
